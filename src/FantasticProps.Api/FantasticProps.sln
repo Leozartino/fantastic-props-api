@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticProps", "FantasticProps.csproj", "{DD4806AF-1359-4431-8CC5-3267779F89A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD4806AF-1359-4431-8CC5-3267779F89A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD4806AF-1359-4431-8CC5-3267779F89A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD4806AF-1359-4431-8CC5-3267779F89A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD4806AF-1359-4431-8CC5-3267779F89A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D4161CAB-953B-4BEE-9C77-956BB32B6A4A}
+	EndGlobalSection
+EndGlobal
