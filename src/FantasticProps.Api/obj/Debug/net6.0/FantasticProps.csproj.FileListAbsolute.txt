@@ -113,3 +113,7 @@ C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\Fanta
 C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\FantasticProps.Api\obj\Debug\net6.0\ref\FantasticProps.dll
 C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\FantasticProps.Api\bin\Debug\net6.0\Humanizer.dll
 C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\FantasticProps.Api\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\FantasticProps.Api\bin\Debug\net6.0\Core.dll
+C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\FantasticProps.Api\bin\Debug\net6.0\Infrastructure.dll
+C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\FantasticProps.Api\bin\Debug\net6.0\Infrastructure.pdb
+C:\Users\SQUADRA\Repositories\Course-Angular-.NETChsarp\FantasticProps\src\FantasticProps.Api\bin\Debug\net6.0\Core.pdb
