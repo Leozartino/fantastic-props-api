@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\FantasticProps\\src\\FantasticProps.csproj": {}
+    "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\src\\FantasticProps.Api\\FantasticProps.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\FantasticProps\\src\\FantasticProps.csproj": {
+    "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\src\\FantasticProps.Api\\FantasticProps.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\FantasticProps\\src\\FantasticProps.csproj",
+        "projectUniqueName": "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\src\\FantasticProps.Api\\FantasticProps.csproj",
         "projectName": "FantasticProps",
-        "projectPath": "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\FantasticProps\\src\\FantasticProps.csproj",
+        "projectPath": "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\src\\FantasticProps.Api\\FantasticProps.csproj",
         "packagesPath": "C:\\Users\\SQUADRA\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\FantasticProps\\src\\obj\\",
+        "outputPath": "C:\\Users\\SQUADRA\\Repositories\\Course-Angular-.NETChsarp\\FantasticProps\\src\\FantasticProps.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\SQUADRA\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,20 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
