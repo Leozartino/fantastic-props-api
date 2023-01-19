@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using FantasticProps.Api.Data;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<StoreContext>(options =>
+  {
+    options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]);
+  });
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
   options.SwaggerDoc("v1", new OpenApiInfo

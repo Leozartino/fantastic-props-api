@@ -4,7 +4,7 @@ namespace FantasticProps.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class ProductsController : ControllerBase
+  public class ProductController : ControllerBase
   {
     [HttpGet]
     public string GetProducts()
