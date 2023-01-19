@@ -1,7 +1,7 @@
-using FantasticProps.Api.Entities;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FantasticProps.Api.Data
+namespace Infrastructure.Data
 {
   public class StoreContext : DbContext
   {
