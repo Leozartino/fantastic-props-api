@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<StoreContext>(options =>
