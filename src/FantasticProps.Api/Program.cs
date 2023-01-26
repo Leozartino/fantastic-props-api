@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -92,5 +93,21 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+  var services = scope.ServiceProvider;
+  var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+  try
+  {
+    var context = services.GetRequiredService<StoreContext>();
+    context.Database.Migrate();
+  }
+  catch (Exception exception)
+  {
+    var logger = loggerFactory.CreateLogger<Program>();
+    logger.LogError(exception, "An error occured during migration");
+  }
+}
 
 app.Run();
