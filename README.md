@@ -4,6 +4,8 @@
 
 ## Getting Started
 
+To get started
+
 ## Functionalities
 
 ## Tecnologies
