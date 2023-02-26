@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
@@ -23,7 +24,7 @@ namespace FantasticProps.Controllers
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(int id)
+    public async Task<ActionResult<Product>> GetProduct(Guid id)
     {
       return Ok(await _productRepository.GetProductByIdAsync(id));
     }

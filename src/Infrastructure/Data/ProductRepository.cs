@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
@@ -14,7 +15,7 @@ namespace Infrastructure.Data
       _context = context;
     }
 
-    public async Task<Product> GetProductByIdAsync(int id)
+    public async Task<Product> GetProductByIdAsync(Guid id)
     {
       return await _context.Products.FindAsync(id);
     }

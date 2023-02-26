@@ -8,6 +8,8 @@ To get started
 
 ## Functionalities
 
+Test
+
 ## Tecnologies
 
 ## Routes
