@@ -1,18 +1,18 @@
 [
   {
-    "Id": 1,
+    "Id": "ba3cbd13-bd24-443e-9c2e-8142afd3813c",
     "Name": "Boards"
   },
   {
-    "Id": 2,
+    "Id": "5843a906-1558-469c-9cfa-87671c6ac4ef",
     "Name": "Hats"
   },
   {
-    "Id": 3,
+    "Id": "7f36fafe-2413-454b-9d38-41cd993fb4c8",
     "Name": "Boots"
   },
   {
-    "Id": 4,
+    "Id": "a1b3f3ca-c192-4db7-bee6-1923809b27fe",
     "Name": "Gloves"
   }
 ]
