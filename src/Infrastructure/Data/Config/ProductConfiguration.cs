@@ -12,9 +12,9 @@ namespace Infrastructure.Data.Config
       builder.Property(property => property.Description).IsRequired();
       builder.Property(property => property.Price).HasColumnType("decimal(18,2)");
       builder.Property(property => property.PictureUrl).IsRequired();
-      builder.HasOne(brand => brand.ProductBrand).WithMany()
+      builder.HasOne(product => product.ProductBrand).WithMany()
         .HasForeignKey(property => property.ProductBrandId);
-      builder.HasOne(type => type.ProductType).WithMany()
+      builder.HasOne(product => product.ProductType).WithMany()
         .HasForeignKey(property => property.ProductTypeId);
     }
   }
