@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications.ProductSpecification;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasticProps.Controllers
@@ -27,7 +28,9 @@ namespace FantasticProps.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
     {
-            var products = await _productRepository.ListAllAsync();
+            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new();
+            var products = 
+                    await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
             return Ok(products);
     }
 
@@ -38,7 +41,7 @@ namespace FantasticProps.Controllers
     }
 
     [HttpGet("types")]
-    public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypess()
+    public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
     {
             return Ok(await _productTypeRepository.ListAllAsync());
     }
@@ -46,7 +49,8 @@ namespace FantasticProps.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<Product>> GetProduct(Guid id)
     {
-            return Ok(await _productRepository.GetByIdAsync(id));
+            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(id);
+            return Ok(await _productRepository.GetEntityWithSpecification(productWithTypesAndBrandsSpecification));
     }
   }
 
