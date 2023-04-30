@@ -4,19 +4,23 @@ namespace Core.Specifications
 {
     public class BaseSpecification<T> : ISpecification<T>
     {
-        public BaseSpecification(Expression<Func<T, bool>> criteria)
+        protected BaseSpecification()
+        {
+        }
+        
+        protected BaseSpecification(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
         }
-
+        
         public Expression<Func<T, bool>> Criteria { get; }
 
-        public IEnumerable<Expression<Func<T, object>>> Includes { get; } = 
+        public IList<Expression<Func<T, object>>> Includes { get; } = 
             new List<Expression<Func<T, object>>>();
 
         protected void AddInclude(Expression<Func<T, object>> includeExpression)
         {
-            Includes.ToList().Add(includeExpression);
+            Includes.Add(includeExpression);
         }
     }
 }
