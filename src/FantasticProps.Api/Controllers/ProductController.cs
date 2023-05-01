@@ -31,13 +31,13 @@ namespace FantasticProps.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductToDto>>> GetProducts()
+    public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts()
     {
             ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new();
             var products = 
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IEnumerable<ProductToDto>>(products));
+            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToDto>>(products));
     }
 
     [HttpGet("brands")]

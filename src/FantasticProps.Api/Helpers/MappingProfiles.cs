@@ -8,6 +8,13 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
-        CreateMap<Product, ProductToDto>();
+        CreateMap<Product, ProductToDto>()
+            .ForMember(productToDto => productToDto.ProductBrand, 
+                product 
+                     => product.MapFrom(p => p.ProductBrand.Name))
+            .ForMember(productToDto => productToDto.ProductType, 
+                product 
+                    => product.MapFrom(p => p.ProductType.Name));
     }
-}
+    
+} 
