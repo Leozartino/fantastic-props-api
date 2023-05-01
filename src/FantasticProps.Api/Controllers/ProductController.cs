@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications.ProductSpecification;
+using FantasticProps.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasticProps.Controllers
@@ -15,23 +17,27 @@ namespace FantasticProps.Controllers
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductBrand> _productBrandRepository;
         private readonly IGenericRepository<ProductType> _productTypeRepository;
+        private readonly IMapper _mapper;
 
-    public ProductController(IGenericRepository<Product> productRepository, 
+        public ProductController(IGenericRepository<Product> productRepository, 
         IGenericRepository<ProductBrand> productBrandRepository,
-        IGenericRepository<ProductType> productTypeRepository)
+        IGenericRepository<ProductType> productTypeRepository,
+        IMapper mapper)
     {
             _productRepository = productRepository;
             _productBrandRepository = productBrandRepository;
             _productTypeRepository = productTypeRepository;
+            _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProductToDto>>> GetProducts()
     {
             ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new();
             var products = 
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
-            return Ok(products);
+
+            return Ok(_mapper.Map<IReadOnlyList<Product>, IEnumerable<ProductToDto>>(products));
     }
 
     [HttpGet("brands")]
@@ -47,10 +53,14 @@ namespace FantasticProps.Controllers
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(Guid id)
+    public async Task<ActionResult<ProductToDto>> GetProduct(Guid id)
     {
             ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(id);
-            return Ok(await _productRepository.GetEntityWithSpecification(productWithTypesAndBrandsSpecification));
+            
+            var product =
+                    await _productRepository.GetEntityWithSpecification(productWithTypesAndBrandsSpecification);
+            
+            return Ok(_mapper.Map<Product, ProductToDto>(product));
     }
   }
 
