@@ -10,16 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FantasticProps.Controllers
 {
-  [ApiController]
-  [Route("api/products")]
-  public class ProductController : ControllerBase
+        public class ProductsController : BaseController
   {
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductBrand> _productBrandRepository;
         private readonly IGenericRepository<ProductType> _productTypeRepository;
         private readonly IMapper _mapper;
 
-        public ProductController(IGenericRepository<Product> productRepository, 
+        public ProductsController(IGenericRepository<Product> productRepository, 
         IGenericRepository<ProductBrand> productBrandRepository,
         IGenericRepository<ProductType> productTypeRepository,
         IMapper mapper)
