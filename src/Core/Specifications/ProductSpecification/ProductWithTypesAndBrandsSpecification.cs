@@ -1,23 +1,22 @@
-using System.Linq.Expressions;
 using Core.Entities;
 
 namespace Core.Specifications.ProductSpecification;
 
 public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
-    public ProductWithTypesAndBrandsSpecification()
+    public ProductWithTypesAndBrandsSpecification() : base()
     {
-        AddIncludes();
+        AddProductTypeAndBrandIncludes();
     }
 
     public ProductWithTypesAndBrandsSpecification(Guid id) : base(product => product.Id == id)
     {
-        AddIncludes();
+        AddProductTypeAndBrandIncludes();
     }
 
-    private void AddIncludes()
+    private void AddProductTypeAndBrandIncludes()
     {
-        AddInclude(product => product.ProductType);
-        AddInclude(product => product.ProductBrand);
+        AddInclude(product => product.ProductType!);
+        AddInclude(product => product.ProductBrand!);
     }
 }

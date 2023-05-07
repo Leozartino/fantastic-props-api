@@ -10,10 +10,15 @@ namespace Core.Specifications
         
         protected BaseSpecification(Expression<Func<T, bool>> criteria)
         {
+            if(Criteria is null)
+            {
+                throw new ArgumentNullException(nameof(criteria));
+            }
+            
             Criteria = criteria;
         }
         
-        public Expression<Func<T, bool>> Criteria { get; }
+        public Expression<Func<T, bool>>? Criteria { get; }
 
         public IList<Expression<Func<T, object>>> Includes { get; } = 
             new List<Expression<Func<T, object>>>();
