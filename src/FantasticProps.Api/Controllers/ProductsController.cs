@@ -6,11 +6,12 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications.ProductSpecification;
 using FantasticProps.Dtos;
+using FantasticProps.Errors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasticProps.Controllers
 {
-    public class ProductsController : BaseController
+    public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductBrand> _productBrandRepository;
@@ -57,6 +58,11 @@ namespace FantasticProps.Controllers
 
             var product =
                     await _productRepository.GetEntityWithSpecification(productWithTypesAndBrandsSpecification);
+
+            if(product is null)
+            {
+                return NotFound(new ApiResponse(404));
+            }
 
             return Ok(_mapper.Map<Product, ProductToDto>(product));
         }
