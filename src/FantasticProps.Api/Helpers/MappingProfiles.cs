@@ -10,10 +10,10 @@ public class MappingProfiles : Profile
         CreateMap<Product, ProductToDto>()
             .ForMember(productToDto => productToDto.ProductBrand,
                 memberConfigSource
-                    => memberConfigSource.MapFrom(product => product.ProductBrand.Name))
+                    => memberConfigSource.MapFrom(product => product.ProductBrand!.Name))
             .ForMember(productToDto => productToDto.ProductType,
                 memberConfigSource
-                    => memberConfigSource.MapFrom(product => product.ProductType.Name))
+                    => memberConfigSource.MapFrom(product => product.ProductType!.Name))
             .ForMember(productToDto => productToDto.PictureUrl, 
                 memberConfigSource
                 => memberConfigSource.MapFrom<ProductUrlResolver>());

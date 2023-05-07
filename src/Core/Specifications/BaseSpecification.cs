@@ -9,12 +9,7 @@ namespace Core.Specifications
         }
         
         protected BaseSpecification(Expression<Func<T, bool>> criteria)
-        {
-            if(Criteria is null)
-            {
-                throw new ArgumentNullException(nameof(criteria));
-            }
-            
+        {   
             Criteria = criteria;
         }
         
