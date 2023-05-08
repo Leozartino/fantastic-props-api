@@ -7,6 +7,7 @@ using Core.Interfaces;
 using Core.Specifications.ProductSpecification;
 using FantasticProps.Dtos;
 using FantasticProps.Errors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FantasticProps.Controllers
@@ -52,6 +53,8 @@ namespace FantasticProps.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToDto>> GetProduct(Guid id)
         {
             ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(id);
