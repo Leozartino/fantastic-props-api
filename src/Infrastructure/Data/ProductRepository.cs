@@ -7,38 +7,38 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-  public class ProductRepository : IProductRepository
-  {
-    private readonly StoreContext _context;
-    public ProductRepository(StoreContext context)
+    public class ProductRepository : IProductRepository
     {
-      _context = context;
-    }
+        private readonly StoreContext _context;
+        public ProductRepository(StoreContext context)
+        {
+            _context = context;
+        }
 
-    public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
-    {
-      return await _context.ProductBrands.ToListAsync();
-    }
+        public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
+        {
+            return await _context.ProductBrands.ToListAsync();
+        }
 
-    public async Task<Product> GetProductByIdAsync(Guid id)
-    {
-      return await _context.Products
-      .Include(product => product.ProductType)
-      .Include(product => product.ProductBrand)
-      .SingleOrDefaultAsync(product => product.Id == id);
-    }
+        public async Task<Product> GetProductByIdAsync(Guid id)
+        {
+            return await _context.Products
+            .Include(product => product.ProductType)
+            .Include(product => product.ProductBrand)
+            .SingleOrDefaultAsync(product => product.Id == id);
+        }
 
-    public async Task<IReadOnlyList<Product>> GetProductsAsync()
-    {
-      return await _context.Products
-      .Include(product => product.ProductType)
-      .Include(product => product.ProductBrand)
-      .ToListAsync();
-    }
+        public async Task<IReadOnlyList<Product>> GetProductsAsync()
+        {
+            return await _context.Products
+            .Include(product => product.ProductType)
+            .Include(product => product.ProductBrand)
+            .ToListAsync();
+        }
 
-    public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
-    {
-      return await _context.ProductTypes.ToListAsync();
+        public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
+        {
+            return await _context.ProductTypes.ToListAsync();
+        }
     }
-  }
 }

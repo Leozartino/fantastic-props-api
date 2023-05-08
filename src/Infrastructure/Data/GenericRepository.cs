@@ -11,7 +11,7 @@ namespace Infrastructure.Data
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
-
+        
         private readonly StoreContext _context;
         public GenericRepository(StoreContext context)
         {
@@ -43,4 +43,4 @@ namespace Infrastructure.Data
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), specification);
         }
     }
-} 
+}
