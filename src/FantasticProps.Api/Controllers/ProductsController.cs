@@ -62,10 +62,7 @@ namespace FantasticProps.Controllers
             var product =
                     await _productRepository.GetEntityWithSpecification(productWithTypesAndBrandsSpecification);
 
-            if(product is null)
-            {
-                return NotFound(new ApiResponse(404));
-            }
+            if(product is null) return NotFound(new ApiResponse(404));
 
             return Ok(_mapper.Map<Product, ProductToDto>(product));
         }
