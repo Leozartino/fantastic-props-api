@@ -35,10 +35,13 @@ namespace FantasticProps.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts([FromQuery] SortOptions sort,
-            [FromQuery] int? brandType,[FromQuery] int? productName)
+        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts([FromQuery] Guid? brandId, [FromQuery] Guid? typeId, 
+            [FromQuery] string? sort = "PriceAsc")
         {
-            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sort);
+            if (!Enum.TryParse(sort, true, out SortOptions sortOptions))
+                return BadRequest(new ApiResponse(400, "Invalid sort options"));
+
+            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sortOptions, brandId, typeId);
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
