@@ -1,16 +1,18 @@
 using Core.Entities;
 using FantasticProps.Enums;
-using System.Diagnostics;
 
 namespace Core.Specifications.ProductSpecification;
 
 public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
-    public ProductWithTypesAndBrandsSpecification(SortOptions sort) : base()
-    {
+    public ProductWithTypesAndBrandsSpecification(SortOptions sort,
+        Guid? brandId, Guid? typeId) : base(product =>
+            (!brandId.HasValue || product.ProductBrandId == brandId) &&
+            (!typeId.HasValue || product.ProductTypeId == typeId)
+        )
+    { 
         AddProductTypeAndBrandIncludes();
-        AddOrderBy(product => product.Name!);
-        Debug.WriteLine($"SortOptions: {sort}");
+
             switch (sort)
             {
                 case SortOptions.PriceAsc:
