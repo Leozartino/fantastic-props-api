@@ -31,9 +31,9 @@ namespace FantasticProps.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts(string sort)
         {
-            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new();
+            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sort);
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
