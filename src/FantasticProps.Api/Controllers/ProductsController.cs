@@ -6,6 +6,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications.ProductSpecification;
 using FantasticProps.Dtos;
+using FantasticProps.Enums;
 using FantasticProps.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,11 @@ namespace FantasticProps.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts(string sort)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts([FromQuery] SortOptions sort,
+            [FromQuery] int? brandType,[FromQuery] int? productName)
         {
             ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sort);
             var products =
@@ -41,12 +46,16 @@ namespace FantasticProps.Controllers
         }
 
         [HttpGet("brands")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandRepository.ListAllAsync());
         }
 
         [HttpGet("types")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
         {
             return Ok(await _productTypeRepository.ListAllAsync());
@@ -54,8 +63,10 @@ namespace FantasticProps.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ProductToDto>> GetProduct(Guid id)
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ProductToDto>> GetProduct([FromRoute] Guid id)
         {
             ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(id);
 

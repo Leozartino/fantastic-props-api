@@ -1,29 +1,28 @@
 using Core.Entities;
+using FantasticProps.Enums;
+using System.Diagnostics;
 
 namespace Core.Specifications.ProductSpecification;
 
 public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
-    public ProductWithTypesAndBrandsSpecification(string sort) : base()
+    public ProductWithTypesAndBrandsSpecification(SortOptions sort) : base()
     {
         AddProductTypeAndBrandIncludes();
-        AddOrderBy(product => product.Name);
-
-        if (!string.IsNullOrEmpty(sort))
-        {
+        AddOrderBy(product => product.Name!);
+        Debug.WriteLine($"SortOptions: {sort}");
             switch (sort)
             {
-                case"priceAsc":
+                case SortOptions.PriceAsc:
                     AddOrderBy(product => product.Price);
                     break;
-                case"priceDesc":
+                case SortOptions.PriceDesc:
                     AddOrderByDescending(product => product.Price);
                     break;
                 default:
-                    AddOrderBy(product => product.Name);
+                    AddOrderBy(product => product.Name!);
                     break;
             }
-        }
     }
 
     public ProductWithTypesAndBrandsSpecification(Guid id) : base(product => product.Id == id)
