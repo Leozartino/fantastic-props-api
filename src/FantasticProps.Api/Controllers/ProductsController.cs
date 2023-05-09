@@ -31,9 +31,9 @@ namespace FantasticProps.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts(string sort)
         {
-            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new();
+            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sort);
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
@@ -62,10 +62,7 @@ namespace FantasticProps.Controllers
             var product =
                     await _productRepository.GetEntityWithSpecification(productWithTypesAndBrandsSpecification);
 
-            if(product is null)
-            {
-                return NotFound(new ApiResponse(404));
-            }
+            if(product is null) return NotFound(new ApiResponse(404));
 
             return Ok(_mapper.Map<Product, ProductToDto>(product));
         }
