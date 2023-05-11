@@ -5,13 +5,14 @@ namespace Core.Specifications.ProductSpecification;
 
 public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
-    public ProductWithTypesAndBrandsSpecification(SortOptions sort,
-        Guid? brandId, Guid? typeId) : base(product =>
-            (!brandId.HasValue || product.ProductBrandId == brandId) &&
-            (!typeId.HasValue || product.ProductTypeId == typeId)
+    public ProductWithTypesAndBrandsSpecification(SortOptions sort, ProductListRequest productListRequest) : base(product =>
+            (!productListRequest.BrandId.HasValue || product.ProductBrandId == productListRequest.BrandId) &&
+            (!productListRequest.TypeId.HasValue || product.ProductTypeId == productListRequest.TypeId)
         )
     { 
         AddProductTypeAndBrandIncludes();
+        ApplyPaging(productListRequest.PageSize * (productListRequest.PageIndex - 1), 
+            productListRequest.PageSize);
 
             switch (sort)
             {
