@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Core.Specifications.ProductSpecification;
 using FantasticProps.Dtos;
 using FantasticProps.Enums;
@@ -31,17 +32,16 @@ namespace FantasticProps.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts([FromQuery] Guid? brandId, [FromQuery] Guid? typeId, 
-            [FromQuery] string? sort = "PriceAsc")
+        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts([FromBody] ProductListRequest request)
         {
-            if (!Enum.TryParse(sort, true, out SortOptions sortOptions))
+            if (!Enum.TryParse(request.Sort, true, out SortOptions sortOptions))
                 return BadRequest(new ApiResponse(400, "Invalid sort options"));
 
-            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sortOptions, brandId, typeId);
+            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sortOptions, request);
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
