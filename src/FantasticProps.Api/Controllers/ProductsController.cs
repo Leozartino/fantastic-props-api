@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Core;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -19,17 +20,22 @@ namespace FantasticProps.Controllers
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductBrand> _productBrandRepository;
         private readonly IGenericRepository<ProductType> _productTypeRepository;
-        private readonly IMapper _mapper;
+        private readonly IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>> _productAdapter;
+        private readonly IAdapter<Product, ProductToDto> _productDtoAdapter;
 
         public ProductsController(IGenericRepository<Product> productRepository,
         IGenericRepository<ProductBrand> productBrandRepository,
         IGenericRepository<ProductType> productTypeRepository,
-        IMapper mapper)
+        IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>> productAdapter,
+        IAdapter<Product, ProductToDto> productDtoAdapter
+        )
         {
             _productRepository = productRepository;
             _productBrandRepository = productBrandRepository;
             _productTypeRepository = productTypeRepository;
-            _mapper = mapper;
+            _productAdapter = productAdapter;
+            _productDtoAdapter = productDtoAdapter;
+            
         }
 
         [HttpPost]
@@ -45,7 +51,7 @@ namespace FantasticProps.Controllers
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToDto>>(products));
+            return Ok(_productAdapter.Adapt(products));
         }
 
         [HttpGet("brands")]
@@ -78,7 +84,7 @@ namespace FantasticProps.Controllers
 
             if(product is null) return NotFound(new ApiResponse(404));
 
-            return Ok(_mapper.Map<Product, ProductToDto>(product));
+            return Ok(_productDtoAdapter.Adapt(product));
         }
     }
 
