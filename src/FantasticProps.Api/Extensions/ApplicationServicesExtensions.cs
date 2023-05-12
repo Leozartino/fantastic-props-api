@@ -1,4 +1,8 @@
-﻿using Core.Interfaces;
+﻿using Core;
+using Core.Entities;
+using Core.Interfaces;
+using FantasticProps.Adapters;
+using FantasticProps.Dtos;
 using FantasticProps.Errors;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +22,8 @@ namespace FantasticProps.Extensions
             IConfiguration configuration)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>>, ProductListAdapter>();
+            services.AddScoped<IAdapter<Product, ProductToDto>, ProductToDtoAdapter>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
