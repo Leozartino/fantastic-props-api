@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using Core;
 using Core.Entities;
 using Core.Interfaces;
@@ -20,20 +19,20 @@ namespace FantasticProps.Controllers
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IGenericRepository<ProductBrand> _productBrandRepository;
         private readonly IGenericRepository<ProductType> _productTypeRepository;
-        private readonly IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>> _productAdapter;
+        private readonly IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>> _productListAdapter;
         private readonly IAdapter<Product, ProductToDto> _productDtoAdapter;
 
         public ProductsController(IGenericRepository<Product> productRepository,
         IGenericRepository<ProductBrand> productBrandRepository,
         IGenericRepository<ProductType> productTypeRepository,
-        IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>> productAdapter,
+        IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>> productListAdapter,
         IAdapter<Product, ProductToDto> productDtoAdapter
         )
         {
             _productRepository = productRepository;
             _productBrandRepository = productBrandRepository;
             _productTypeRepository = productTypeRepository;
-            _productAdapter = productAdapter;
+            _productListAdapter = productListAdapter;
             _productDtoAdapter = productDtoAdapter;
             
         }
@@ -51,7 +50,7 @@ namespace FantasticProps.Controllers
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
-            return Ok(_productAdapter.Adapt(products));
+            return Ok(_productListAdapter.Adapt(products));
         }
 
         [HttpGet("brands")]
