@@ -2,6 +2,7 @@
 using Core.Entities;
 using FantasticProps.Dtos;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FantasticProps.Adapters
 {
@@ -9,25 +10,16 @@ namespace FantasticProps.Adapters
     {
         public IEnumerable<ProductToDto> Adapt(IEnumerable<Product> source)
         {
-            List<ProductToDto> productToDtos = new();
-
-            foreach (Product product in source)
+            return source.Select(product => new ProductToDto
             {
-                ProductToDto productToDto = new()
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Description = product.Description,
-                    Price = product.Price,
-                    PictureUrl = product.PictureUrl,
-                    ProductBrand = product.ProductBrand?.Name,
-                    ProductType = product.ProductType?.Name
-                };
-
-                productToDtos.Add(productToDto);
-            }
-
-            return productToDtos;
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                PictureUrl = product.PictureUrl,
+                ProductBrand = product.ProductBrand?.Name,
+                ProductType = product.ProductType?.Name
+            }).ToList();
         }
     }
 }
