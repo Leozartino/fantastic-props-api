@@ -6,6 +6,7 @@ using Core.Specifications.ProductSpecification;
 using FantasticProps.Dtos;
 using FantasticProps.Enums;
 using FantasticProps.Errors;
+using FantasticProps.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -41,16 +42,27 @@ namespace FantasticProps.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IReadOnlyList<ProductToDto>>> GetProducts([FromBody] ProductListRequest request)
+        public async Task<ActionResult<Pagination<ProductToDto>>> GetProducts([FromBody] ProductListRequest request)
         {
             if (!Enum.TryParse(request.Sort, true, out SortOptions sortOptions))
                 return BadRequest(new ApiResponse(400, "Invalid sort options"));
 
-            ProductWithTypesAndBrandsSpecification productWithTypesAndBrandsSpecification = new(sortOptions, request);
+            var productWithTypesAndBrandsSpecification = new ProductWithTypesAndBrandsSpecification(sortOptions, request);
+            var countSpecification = new ProductsWithFilterForCountSpecification(sortOptions, request);
+            var totalItems = await _productRepository.CountAsync(countSpecification);
+            
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
-            return Ok(_productListAdapter.Adapt(products));
+            var paginationData = new Pagination<ProductToDto>
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                Count = totalItems,
+                Data = _productListAdapter.Adapt(products)
+            };
+
+            return Ok(paginationData);
         }
 
         [HttpGet("brands")]

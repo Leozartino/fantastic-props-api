@@ -5,7 +5,8 @@ namespace Core.Specifications.ProductSpecification;
 
 public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
-    public ProductWithTypesAndBrandsSpecification(SortOptions sort, ProductListRequest productListRequest) : base(product =>
+    public ProductWithTypesAndBrandsSpecification(SortOptions sort, ProductListRequest productListRequest) 
+        : base(product =>
             (!productListRequest.BrandId.HasValue || product.ProductBrandId == productListRequest.BrandId) &&
             (!productListRequest.TypeId.HasValue || product.ProductTypeId == productListRequest.TypeId)
         )
