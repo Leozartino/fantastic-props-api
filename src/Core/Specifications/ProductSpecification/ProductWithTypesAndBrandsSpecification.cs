@@ -7,6 +7,7 @@ public class ProductWithTypesAndBrandsSpecification : BaseSpecification<Product>
 {
     public ProductWithTypesAndBrandsSpecification(SortOptions sort, ProductListRequest productListRequest) 
         : base(product =>
+            (string.IsNullOrEmpty(productListRequest.Search) || product.Name.ToLower().Contains(productListRequest.Search)) &&
             (!productListRequest.BrandId.HasValue || product.ProductBrandId == productListRequest.BrandId) &&
             (!productListRequest.TypeId.HasValue || product.ProductTypeId == productListRequest.TypeId)
         )

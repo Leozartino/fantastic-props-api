@@ -13,5 +13,12 @@
         public Guid? BrandId { get; set; }
         public Guid? TypeId { get; set; }
         public string Sort { get; set; } = "PriceAsc";
+        private string _search;
+        public string Search 
+        { 
+            get { return _search; }
+            set { _search = value.ToLower(); }
+        }
+
     }
 }
