@@ -101,6 +101,16 @@ namespace FantasticProps.Extensions
                 });
             });
 
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins(configuration["Cors:ClientUri"]);
+                });
+            });
+
             return services;
         }
     }
