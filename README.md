@@ -18,7 +18,7 @@ The project follows a modular and organized structure, adhering to the principle
 
 1. **API Layer:** Contains the API endpoints and serves as the entry point for external communication.
 
-2. **Presentation Layer:** Represents the user interface and interaction components, developed using Angular.
+2. **Domain Layer(core):** Represents the entities, the definitions for interfances (repositories and services).
 
 3. **Infrastructure Layer:** Manages the underlying infrastructure, including database interactions, external services, and other low-level concerns.
 
