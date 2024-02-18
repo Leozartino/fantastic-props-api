@@ -7,6 +7,7 @@ using FantasticProps.Dtos;
 using FantasticProps.Enums;
 using FantasticProps.Errors;
 using FantasticProps.Helpers;
+using FantasticProps.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -43,7 +44,7 @@ namespace FantasticProps.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Pagination<ProductToDto>>> GetProducts([FromBody] ProductListRequest request)
-        {
+        {                
             if (!Enum.TryParse(request.Sort, true, out SortOptions sortOptions))
                 return BadRequest(new ApiResponse(400, "Invalid sort options"));
 
@@ -93,7 +94,7 @@ namespace FantasticProps.Controllers
             var product =
                     await _productRepository.GetEntityWithSpecification(productWithTypesAndBrandsSpecification);
 
-            if (product is null) return NotFound(new ApiResponse(404));
+            if (product is null) return NotFound(new ApiResponse(404, "Resource was not found!"));
 
             return Ok(_productDtoAdapter.Adapt(product));
         }
