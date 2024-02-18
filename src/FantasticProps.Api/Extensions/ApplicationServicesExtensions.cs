@@ -1,10 +1,14 @@
 ﻿using Core;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using FantasticProps.Adapters;
 using FantasticProps.Dtos;
-using FantasticProps.Errors;
+using FantasticProps.Validators;
+using FluentValidation;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,29 +26,34 @@ namespace FantasticProps.Extensions
             IConfiguration configuration)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IValidator<ProductListRequest>, ProduListValidator>();
             services.AddScoped<IAdapter<IEnumerable<Product>, IEnumerable<ProductToDto>>, ProductListAdapter>();
             services.AddScoped<IAdapter<Product, ProductToDto>, ProductToDtoAdapter>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             services.AddRouting(options => options.LowercaseUrls = true);
 
 
-            services.Configure<ApiBehaviorOptions>(o =>
+            services.Configure<ApiBehaviorOptions>(options =>
             {
-                o.InvalidModelStateResponseFactory = actionContext =>
+                options.InvalidModelStateResponseFactory = context =>
                 {
-                    var errors = actionContext.ModelState
-                        .Where(e => e.Value.Errors.Count > 0)
-                        .SelectMany(x => x.Value.Errors)
-                        .Select(x => x.ErrorMessage).ToArray();
+                    var errors = context.ModelState
+                                        .Where(e => e.Value.Errors.Count > 0)
+                                        .ToDictionary(e => e.Key, e => e.Value.Errors.Select(error => error.ErrorMessage).ToArray());
 
-                    var errorResponse = new ApiValidationErrorResponse
+                    var problemDetails = new ValidationProblemDetails(context.ModelState)
                     {
-                        Errors = errors
+                        Title = "Your request is not consistent, please review the following fields below",
+                        Status = StatusCodes.Status400BadRequest,
+                        Detail = "See the errors field for details.",
+                        Instance = context.HttpContext.Request.Path
                     };
 
-                    return new BadRequestObjectResult(errorResponse);
+                    problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+                    problemDetails.Extensions.Add("errors", errors);
+
+                    return new BadRequestObjectResult(problemDetails);
                 };
             });
 
@@ -52,6 +61,12 @@ namespace FantasticProps.Extensions
             {
                 options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]);
             });
+
+            // IdentityUser -> represents the logged user
+            // IdentityRole -> user profile (adm, common user, etc)
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<StoreContext>();
 
             services.AddEndpointsApiExplorer();
 
