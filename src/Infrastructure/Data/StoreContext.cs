@@ -1,11 +1,11 @@
-using System.Linq;
-using System.Reflection;
 using Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Infrastructure.Data
 {
-    public class StoreContext : DbContext
+    public class StoreContext : IdentityDbContext
     {
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
