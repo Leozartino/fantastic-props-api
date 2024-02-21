@@ -27,6 +27,8 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("Development");
+
     app.UseSwagger(options =>
     {
         options.SerializeAsV2 = true;
@@ -37,6 +39,9 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         options.RoutePrefix = string.Empty;
     });
+} else 
+{
+    app.UseCors("Production ");
 }
 
 app.UseHttpsRedirection();

@@ -147,7 +147,14 @@ namespace FantasticProps.Extensions
 
             services.AddCors(opt =>
             {
-                opt.AddPolicy("CorsPolicy", policy =>
+                opt.AddPolicy("Development", policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowAnyOrigin();
+                });
+
+                opt.AddPolicy("Production", policy =>
                 {
                     policy.AllowAnyHeader()
                         .AllowAnyMethod()
