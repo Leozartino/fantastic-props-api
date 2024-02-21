@@ -1,6 +1,5 @@
 ﻿using Core.Interfaces;
 using Core.Models;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -21,8 +20,8 @@ namespace FantasticProps.Controllers
         private readonly IJwtSettingsHelper _jwtHelper;
 
         public AuthController(
-            SignInManager<IdentityUser> 
-            signInManager, UserManager<IdentityUser> userManager, 
+            SignInManager<IdentityUser>
+            signInManager, UserManager<IdentityUser> userManager,
             IOptions<JwtSettings> jwtSettings,
             IJwtSettingsHelper jwtSettingsHelper)
         {
@@ -37,16 +36,16 @@ namespace FantasticProps.Controllers
         {
             IdentityUser user = new()
             {
-               UserName = registerUser.Email,
-               Email = registerUser.Email,
-               //In a real scenario, you should verify the email to confirm the user first, before proceed to the
-               //register user
-               EmailConfirmed = true
+                UserName = registerUser.Email,
+                Email = registerUser.Email,
+                //In a real scenario, you should verify the email to confirm the user first, before proceed to the
+                //register user
+                EmailConfirmed = true
             };
 
             var result = await _userManager.CreateAsync(user, registerUser.Password);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
                 return Ok(_jwtHelper.GenerateJWT(_jwtSettings, await AddClaimRoles(user.Email)));
@@ -81,7 +80,7 @@ namespace FantasticProps.Controllers
                 new Claim(ClaimTypes.Name, user.UserName),
             };
 
-            foreach(var role in roles)
+            foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
