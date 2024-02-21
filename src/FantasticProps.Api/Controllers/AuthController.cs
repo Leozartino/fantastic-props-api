@@ -1,8 +1,11 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FantasticProps.Controllers
@@ -46,7 +49,7 @@ namespace FantasticProps.Controllers
             if(result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return Ok(_jwtHelper.GenerateJWT(_jwtSettings));
+                return Ok(_jwtHelper.GenerateJWT(_jwtSettings, await AddClaimRoles(user.Email)));
             }
 
             return Problem("Error while trying to register the user");
@@ -60,10 +63,30 @@ namespace FantasticProps.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(_jwtHelper.GenerateJWT(_jwtSettings));
+
+
+                return Ok(_jwtHelper.GenerateJWT(_jwtSettings, await AddClaimRoles(loginUser.Email)));
             }
 
             return Problem("User and/or password incorrect!");
+        }
+
+        private async Task<List<Claim>> AddClaimRoles(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+            };
+
+            foreach(var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            return claims;
         }
     }
 }

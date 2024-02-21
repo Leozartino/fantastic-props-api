@@ -7,7 +7,7 @@ using FantasticProps.Dtos;
 using FantasticProps.Enums;
 using FantasticProps.Errors;
 using FantasticProps.Helpers;
-using FantasticProps.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace FantasticProps.Controllers
 {
+    [Authorize]
     public class ProductsController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productRepository;
@@ -44,14 +45,14 @@ namespace FantasticProps.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Pagination<ProductToDto>>> GetProducts([FromBody] ProductListRequest request)
-        {                
+        {
             if (!Enum.TryParse(request.Sort, true, out SortOptions sortOptions))
                 return BadRequest(new ApiResponse(400, "Invalid sort options"));
 
             var productWithTypesAndBrandsSpecification = new ProductWithTypesAndBrandsSpecification(sortOptions, request);
             var countSpecification = new ProductsWithFilterForCountSpecification(sortOptions, request);
             var totalItems = await _productRepository.CountAsync(countSpecification);
-            
+
             var products =
                     await _productRepository.ListAsync(productWithTypesAndBrandsSpecification);
 
@@ -66,24 +67,28 @@ namespace FantasticProps.Controllers
             return Ok(paginationData);
         }
 
+        [AllowAnonymous]
         [HttpGet("brands")]
-        [ProducesResponseType(typeof(IReadOnlyList<ProductBrand>),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IReadOnlyList<ProductBrand>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandRepository.ListAllAsync());
         }
 
+        [AllowAnonymous]
         [HttpGet("types")]
-        [ProducesResponseType(typeof(IReadOnlyList<ProductType>),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IReadOnlyList<ProductType>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
         {
             return Ok(await _productTypeRepository.ListAllAsync());
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ProductToDto),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProductToDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
