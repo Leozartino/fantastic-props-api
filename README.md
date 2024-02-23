@@ -26,7 +26,7 @@ The project follows a modular and organized structure, adhering to the principle
 
 The project incorporates the Generic Repository Pattern, enhancing data access by providing a common set of methods for CRUD operations. This promotes code reusability and maintainability.
 
-## Database and Migrations
+## Database and Migrations 🗃️
 
 SQL Server is utilized as the database for this E-commerce project. The project integrates migrations to manage database schema changes efficiently.
 
