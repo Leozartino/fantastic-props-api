@@ -12,10 +12,9 @@ using Microsoft.Extensions.Logging;
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 // Add services to the container.
-var JwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
 
 builder.Services.AddControllers();
-builder.Services.AddApplicationServices(configuration, JwtSettingsSection);
+builder.Services.AddApplicationServices(configuration);
 
 
 var app = builder.Build();

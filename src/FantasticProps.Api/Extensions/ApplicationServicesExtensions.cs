@@ -28,7 +28,7 @@ namespace FantasticProps.Extensions
     public static class ApplicationServicesExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
-            IConfiguration configuration, IConfigurationSection jwtSettings)
+            IConfiguration configuration)
         {
             services.AddScoped<IJwtSettingsHelper, JwtSetttingsHelper>();
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -38,6 +38,10 @@ namespace FantasticProps.Extensions
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddRouting(options => options.LowercaseUrls = true);
+
+            services.Configure<ApplicationConfig>(configuration);
+
+            var applicationConfig = configuration.Get<ApplicationConfig>();
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -64,7 +68,7 @@ namespace FantasticProps.Extensions
 
             services.AddDbContext<StoreContext>(options =>
             {
-                options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]);
+                options.UseSqlServer(applicationConfig.ConnectionStrings.DefaultConnection);
             });
 
             // IdentityUser -> represents the logged user
@@ -73,10 +77,9 @@ namespace FantasticProps.Extensions
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<StoreContext>();
 
-            services.Configure<JwtSettings>(jwtSettings);
+            var JwtSettingsConfig = applicationConfig?.JwtSettings;
 
-            var jwtConfig = jwtSettings.Get<JwtSettings>();
-            var key = Encoding.ASCII.GetBytes(jwtConfig.Secret);
+            var key = Encoding.ASCII.GetBytes(JwtSettingsConfig.Secret);
 
             services.AddAuthentication(options =>
             {
@@ -92,8 +95,8 @@ namespace FantasticProps.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = jwtConfig.Audience,
-                    ValidIssuer = jwtConfig.Issuer
+                    ValidAudience = JwtSettingsConfig.Audience,
+                    ValidIssuer = JwtSettingsConfig.Issuer
                 };
             });
 
@@ -109,12 +112,12 @@ namespace FantasticProps.Extensions
                     Contact = new OpenApiContact
                     {
                         Name = "Leonardo Oliveira",
-                        Url = new Uri(uriString: configuration["SwaggerUris:ContactUri"])
+                        Url = new Uri(uriString: applicationConfig.SwaggerUris.ContactUri)
                     },
                     License = new OpenApiLicense
                     {
                         Name = "MIT License",
-                        Url = new Uri(uriString: configuration["SwaggerUris:LicenseUri"])
+                        Url = new Uri(uriString: applicationConfig.SwaggerUris.LicenseUri)
                     }
                 });
 
@@ -158,7 +161,7 @@ namespace FantasticProps.Extensions
                 {
                     policy.AllowAnyHeader()
                         .AllowAnyMethod()
-                        .WithOrigins(configuration["Cors:ClientUri"]);
+                        .WithOrigins(applicationConfig.Cors);
                 });
             });
 
